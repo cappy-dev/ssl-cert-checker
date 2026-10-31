@@ -256,7 +256,11 @@ def main(argv: list[str] | None = None) -> int:
             print()
 
     now_expired = any(r.status == "expired" for r in results)
-    now_warning = any(r.days_remaining <= args.days and r.status != "expired" for r in results)
+    now_warning = any(
+        r.status == "warning"
+        or (r.days_remaining <= args.days and r.status != "expired")
+        for r in results
+    )
     now_error = any(r.status == "error" for r in results)
 
     if now_error:
